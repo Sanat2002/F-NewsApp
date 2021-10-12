@@ -20,7 +20,7 @@ class News {
     required this.content,
   });
 
-  factory News.fromjson(Map<String,String> json){
+  factory News.fromjson(Map<String,dynamic> json){
     return News(
       author: json["author"] ?? " ",
       title: json["title"] ?? " ",

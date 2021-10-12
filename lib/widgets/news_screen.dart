@@ -14,7 +14,7 @@ class NewsScreen extends StatefulWidget {
 
 class _NewsScreenState extends State<NewsScreen> {
 
-  final url = "https://newsapi.org/v2/everything?q=tesla&from=2021-09-11&sortBy=publishedAt&apiKey=cbd6da9e64e946cbb843715308b3de0b";
+  final url = "https://newsapi.org/v2/everything?q=tesla&from=2021-09-12&sortBy=publishedAt&apiKey=cbd6da9e64e946cbb843715308b3de0b";
 
   // late News n;
 
@@ -33,6 +33,10 @@ class _NewsScreenState extends State<NewsScreen> {
     var r_data = b_json["articles"];
 
     News.news = List.from(r_data).map((e) => News.fromjson(e)).toList();
+    print(News.news);
+    setState(() {
+      
+    });
   }
 
   @override
@@ -43,7 +47,7 @@ class _NewsScreenState extends State<NewsScreen> {
             title: Center(child: "News App".text.make()),
           ),
           body: ListView.builder(
-            itemCount: 2,
+            itemCount: News.news.length,
             itemBuilder: (context,index){
             return Container(
               child: News.news[index].title.text.make(),
