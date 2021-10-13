@@ -34,7 +34,7 @@ Future<List <Articles>> getnews() async {
     json["articles"].forEach((element) {
       if (element["urlToImage"] != null && element["description"] != null && element["url"]!=null) {
         var obj = Articles(
-          author: element["author"] ?? " ",
+          author: element["author"] ?? " ", // null check operator must be used
           title: element["title"] ?? " ",
           desc: element["description"] ?? " ",
           url: element["url"] ?? " ",

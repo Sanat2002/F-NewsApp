@@ -22,7 +22,7 @@ class News {
 
   factory News.fromjson(Map<String,dynamic> json){
     return News(
-      author: json["author"] ?? " ",
+      author: json["author"] ?? " ", // null operator must be used
       title: json["title"] ?? " ",
       desc: json["desc"] ?? " ",
       url: json["url"] ?? " ",
