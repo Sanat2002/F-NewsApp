@@ -3,8 +3,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_news/models/articles.dart';
 import 'package:flutter_news/models/category.dart';
 import 'package:flutter_news/models/news.dart';
+import 'package:flutter_news/widgets/newsdetail_screen.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,6 +44,24 @@ class _NewsScreenState extends State<NewsScreen> {
   //   });
   // }
 
+  List<Articles> news = [];
+  var _loading = true;
+
+  @override
+  void initState() {
+    // news = getnews();
+    load();
+    super.initState();
+  }
+
+  load() async{
+    news = await getnews();
+    print(news.length);
+    setState(() {
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  SafeArea(
@@ -57,13 +77,58 @@ class _NewsScreenState extends State<NewsScreen> {
               ],
             ),
           ),
-          body: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: getCategories().length,
-            itemBuilder: (context,index){
-              return CategoryTile(imageurl : getCategories()[index].imageurl,categoryname:getCategories()[index].categoryname);
-            })
+          body: SingleChildScrollView(
+            child: Column(
+              children: [ 
+                  SizedBox(
+                    height: 90,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: getCategories().length,
+                      itemBuilder: (context,index){
+                        return CategoryTile(imageurl : getCategories()[index].imageurl,categoryname:getCategories()[index].categoryname);
+                      }),
+                  ),
+                  10.heightBox,
+                    _loading?SizedBox(
+                      height: MediaQuery.of(context).size.height*.7, // it gives the height of the screen multiply by .7 -> 70% of height of screen
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ) : SizedBox(
+                      height: 50,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          "Today's Top".text.xl4.color(Colors.lightBlue).make(),
+                          " News".text.xl4.extraBlack.make()
+                        ],
+                      )
+                    ),
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: news.length,                  
+                      itemBuilder: (context,index){
+                        return BlogTile(imgurl: news[index].urlimg, title: news[index].title, desc: news[index].desc,url: news[index].url,);
+                    }).px12(),
+                ],
+              ),
+          ),
+          // )
+          // body: SingleChildScrollView(
+          //   // p
+          //   scrollDirection: Axis.vertical,
+          //   child: ListView.builder(
+          //     physics: const NeverScrollableScrollPhysics(),
+          //             shrinkWrap: true,
+          //             scrollDirection: Axis.vertical,
+          //             itemCount: news.length,                  
+          //             itemBuilder: (context,index){
+          //               return BlogTile(imgurl: news[index].urlimg, title: news[index].title, desc: news[index].desc);
+          //           }),
+          // ),
         ),
     );
   }
@@ -97,7 +162,7 @@ class CategoryTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   color:Colors.black26,
                 ),
-                child: Center(child: categoryname.text.xl.white.make()))        
+                child: Center(child: categoryname.text.xl.white.make()))
             ],
           ),
       ).px(8),
@@ -108,18 +173,28 @@ class CategoryTile extends StatelessWidget {
 
 class BlogTile extends StatelessWidget {
 
-  final String imgurl,title,desc;
+  final String imgurl,title,desc,url;
 
-  const BlogTile({ Key? key,required this.imgurl,required this.title,required this.desc}) : super(key: key);
+  const BlogTile({ Key? key,required this.imgurl,required this.title,required this.desc,required this.url}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:[
-        Image.network(imgurl),
-        title.text.make(),
-        desc.text.make()
-      ]
+    return GestureDetector(
+      onTap:(){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>NewsDetail(blogurl: url)));
+      },
+      child: Column(
+        children:[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: SizedBox(
+              height: 210,
+              width: 400,
+              child: Image.network(imgurl))),
+          title.text.extraBlack.xl.make(),
+          desc.text.color(Vx.gray700).make().py8()
+        ]
+      ).py8(),
     );
   }
 }
