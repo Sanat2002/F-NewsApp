@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -77,20 +79,47 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        
+      },
+      child: Container(
+        margin: EdgeInsets.only(right:8),
+        child: Stack( // Stack is to be used
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(imageurl,width: 120,height: 80,fit:BoxFit.cover,)),
+              Container(
+                width: 120,
+                height:80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color:Colors.black26,
+                ),
+                child: Center(child: categoryname.text.xl.white.make()))        
+            ],
+          ),
+      ).px(8),
+    );
+  }
+}
+
+
+class BlogTile extends StatelessWidget {
+
+  final String imgurl,title,desc;
+
+  const BlogTile({ Key? key,required this.imgurl,required this.title,required this.desc}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      children: [
-        Stack(
-          children: [
-            // Container(
-            //   height: 100,
-            //   width: 100,
-            //   color: Colors.red,
-            // ).p12(),
-            Image.network(imageurl,width: 100,height: 100,),
-            // categoryname.text.make()        
-          ],
-        ),
-      ],
+      children:[
+        Image.network(imgurl),
+        title.text.make(),
+        desc.text.make()
+      ]
     );
   }
 }
