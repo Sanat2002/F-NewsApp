@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        "/" : (context) => NewsScreen(),
+        "/" : (context) => const NewsScreen(),
       },
 
     );

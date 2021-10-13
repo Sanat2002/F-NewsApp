@@ -33,7 +33,7 @@ class _NewsDetailState extends State<NewsDetail> {
               ],
             ),
           ),
-        body: WebView(
+        body: WebView( // used to show the web page in the app
           initialUrl: widget.blogurl,
           onWebViewCreated: ((WebViewController webviewController){
             _hel.complete(webviewController);
