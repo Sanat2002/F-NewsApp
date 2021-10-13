@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news/models/articles.dart';
 import 'package:flutter_news/models/category.dart';
 import 'package:flutter_news/models/news.dart';
+import 'package:flutter_news/widgets/category_screen.dart';
 import 'package:flutter_news/widgets/newsdetail_screen.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
@@ -146,7 +147,7 @@ class CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>Category(cat: categoryname)));
       },
       child: Container(
         margin: EdgeInsets.only(right:8),

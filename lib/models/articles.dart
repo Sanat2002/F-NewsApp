@@ -32,7 +32,7 @@ Future<List <Articles>> getnews() async {
 
   if (json["status"] == "ok") {
     json["articles"].forEach((element) {
-      if (element["urlToImage"] != null && element["description"] != null) {
+      if (element["urlToImage"] != null && element["description"] != null && element["url"]!=null) {
         var obj = Articles(
           author: element["author"] ?? " ",
           title: element["title"] ?? " ",
