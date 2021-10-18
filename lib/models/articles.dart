@@ -74,4 +74,4 @@ Future<List <Articles>> getcategorynews(String category) async {
     });
   }
   return news;
-}
+
